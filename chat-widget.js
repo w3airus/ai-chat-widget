@@ -159,11 +159,14 @@
         cursor: pointer;
         flex: 1;
         min-width: 80px;
+        color: #333333; /* ← добавлено явно */
+        text-align: center;
+        white-space: nowrap;
       }
       .channel-btn:hover {
         border-color: ${CONFIG.mainColor};
-        background: #f8fafc;
-        color: #333333;
+        background: #8B5CF6;
+        color: #f2f2f2;
       }
       .consent-block label {
         display: flex;
@@ -315,5 +318,6 @@
     if (e.key === 'Enter') sendMessage(inputEl.value);
   });
 })();
+
 
 
