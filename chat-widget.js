@@ -163,6 +163,7 @@
       .channel-btn:hover {
         border-color: ${CONFIG.mainColor};
         background: #f8fafc;
+        color: #333333;
       }
       .consent-block label {
         display: flex;
@@ -188,7 +189,7 @@
     </style>
 
     <button class="chat-toggle-btn">
-      <img src="${CONFIG.avatarUrl}" alt="Аватар" style="width:100%;height:100%;border-radius:50%;object-fit:cover;" />
+      <img src="${CONFIG.avatarUrl}" alt="Аватар" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" />
     </button>
     <div class="chat-window">
       <div class="chat-header">
@@ -314,4 +315,5 @@
     if (e.key === 'Enter') sendMessage(inputEl.value);
   });
 })();
+
 
