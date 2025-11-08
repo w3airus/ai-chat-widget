@@ -255,7 +255,7 @@
         container.querySelector('.channel-selector')?.remove();
         container.querySelector('.consent-block')?.remove();
         inputArea.style.display = 'flex';
-        addMessage('Отлично! Задавайте ваш вопрос.', false);
+        addMessage('Отлично! Чем я вам могу помочь?', false);
       } else if (channel === 'tg' && CONFIG.telegramBot) {
         window.open(`https://t.me/${CONFIG.telegramBot}?start=${sessionId}`, '_blank');
         addMessage('Переход в Telegram…', false);
@@ -314,3 +314,4 @@
     if (e.key === 'Enter') sendMessage(inputEl.value);
   });
 })();
+
