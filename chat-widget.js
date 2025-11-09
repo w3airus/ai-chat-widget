@@ -6,12 +6,12 @@
     vkGroup: script.dataset.vk || '',
     mainColor: script.dataset.color || '#2563eb',
     backgroundColor: script.dataset.bgColor || '#ffffff',
-    botName: script.dataset.botName || 'Консультант 24/7',
+    botName: script.dataset.botName || 'Агент',
     avatarUrl: script.dataset.avatar || 'https://via.placeholder.com/40/2563eb/ffffff?text=AI',
     welcomeMessage: script.dataset.welcome || 'Здравствуйте! Чем могу помочь?',
     inputPlaceholder: script.dataset.placeholder || 'Напишите ваш вопрос...',
-    backendUrl: script.dataset.webhook || 'https://w3ai.ru/webhook/webhook/chat',
-    privacyUrl: script.dataset.privacyUrl || '#' // <-- НОВОЕ
+    backendUrl: script.dataset.webhook || 'https://your-n8n-url.com/webhook/chat',
+    privacyUrl: script.dataset.privacyUrl || '#'
   };
 
   let sessionId = localStorage.getItem('ai_session_id');
@@ -45,10 +45,38 @@
         align-items: center;
         justify-content: center;
         font-size: 24px;
+        position: relative;
+        z-index: 1;
         transition: transform 0.2s;
+      }
+      .chat-toggle-btn::before,
+      .chat-toggle-btn::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background: ${CONFIG.mainColor};
+        opacity: 0.4;
+        z-index: -1;
+        animation: pulse 2s infinite;
+      }
+      .chat-toggle-btn::after {
+        animation-delay: 1s;
+      }
+      @keyframes pulse {
+        0% { transform: scale(0.8); opacity: 0.4; }
+        100% { transform: scale(2); opacity: 0; }
       }
       .chat-toggle-btn:hover {
         transform: scale(1.1);
+        animation: none;
+      }
+      .chat-toggle-btn:hover::before,
+      .chat-toggle-btn:hover::after {
+        animation: none;
       }
       .chat-window {
         width: 360px;
@@ -159,14 +187,12 @@
         cursor: pointer;
         flex: 1;
         min-width: 80px;
-        color: #333333; /* ← добавлено явно */
-        text-align: center;
-        white-space: nowrap;
+        color: #333333;
       }
       .channel-btn:hover {
         border-color: ${CONFIG.mainColor};
-        background: #8B5CF6;
-        color: #f2f2f2;
+        background: #f8fafc;
+        color: ${CONFIG.mainColor};
       }
       .consent-block label {
         display: flex;
@@ -191,9 +217,7 @@
       }
     </style>
 
-    <button class="chat-toggle-btn">
-      <img src="${CONFIG.avatarUrl}" alt="Аватар" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" />
-    </button>
+    <button class="chat-toggle-btn">💬</button>
     <div class="chat-window">
       <div class="chat-header">
         <img src="${CONFIG.avatarUrl}" class="bot-avatar" alt="Агент" />
@@ -202,15 +226,15 @@
       </div>
       <div class="chat-messages">
         <div class="message bot-message">${CONFIG.welcomeMessage}</div>
-        <div class="channel-selector">
-          <p style="margin: 10px 0; font-size: 14px; color: #475569;">Выберите способ связи:</p>
-          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-            <button class="channel-btn" data-channel="web">💬 На сайте</button>
-            ${CONFIG.telegramBot ? `<button class="channel-btn" data-channel="tg">📱 Telegram</button>` : ''}
-            ${CONFIG.whatsappNumber ? `<button class="channel-btn" data-channel="wa">💬 WhatsApp</button>` : ''}
-            ${CONFIG.vkGroup ? `<button class="channel-btn" data-channel="vk">📘 VK</button>` : ''}
-          </div>
-        </div>
+      <div class="channel-selector">
+  	<p style="margin: 10px 0; font-size: 14px; color: #475569;">Выберите способ связи:</p>
+  	<button class="channel-btn full-width" data-channel="web">💬 На сайте</button>
+  	<div class="messenger-row">
+    	${CONFIG.telegramBot ? `<button class="channel-btn" data-channel="tg">📱 Telegram</button>` : ''}
+    	${CONFIG.whatsappNumber ? `<button class="channel-btn" data-channel="wa">💬 WhatsApp</button>` : ''}
+    	${CONFIG.vkGroup ? `<button class="channel-btn" data-channel="vk">📘 VK</button>` : ''}
+  	</div>
+	</div>
         <div class="consent-block">
           <label>
             <input type="checkbox" id="consent-checkbox" required>
@@ -251,7 +275,7 @@
   channelButtons.forEach(btn => {
     btn.addEventListener('click', () => {
       if (!consentCheckbox.checked) {
-        addMessage('Пожалуйста, дайте согласие на обработку персональных данных. Ваши данные надежно защищены на наших серверах и не передаются третьим лицам.', false);
+        addMessage('Пожалуйста, дайте согласие на обработку ПДн.', false);
         return;
       }
       const channel = btn.dataset.channel;
@@ -259,7 +283,7 @@
         container.querySelector('.channel-selector')?.remove();
         container.querySelector('.consent-block')?.remove();
         inputArea.style.display = 'flex';
-        addMessage('Отлично! Чем я вам могу помочь?', false);
+        addMessage('Отлично! Задавайте ваш вопрос.', false);
       } else if (channel === 'tg' && CONFIG.telegramBot) {
         window.open(`https://t.me/${CONFIG.telegramBot}?start=${sessionId}`, '_blank');
         addMessage('Переход в Telegram…', false);
@@ -318,5 +342,3 @@
     if (e.key === 'Enter') sendMessage(inputEl.value);
   });
 })();
-
-
