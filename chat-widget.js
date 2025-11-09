@@ -12,7 +12,6 @@
     inputPlaceholder: script.dataset.placeholder || 'Напишите ваш вопрос...',
     backendUrl: script.dataset.webhook || 'https://w3ai.ru/webhook/webhook/chat',
     privacyUrl: script.dataset.privacyUrl || '#' // <-- НОВОЕ
-    glassEffect: script.dataset.glass === 'true',
   };
 
   let sessionId = localStorage.getItem('ai_session_id');
@@ -33,75 +32,33 @@
         z-index: 10000;
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       }
-  .chat-toggle-btn {
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    background: ${CONFIG.mainColor};
-    color: white;
-    border: none;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    position: relative;
-    z-index: 1;
-    }
-
-.chat-toggle-btn::before,
-.chat-toggle-btn::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background: ${CONFIG.mainColor};
-  opacity: 0.4;
-  z-index: -1;
-  animation: pulse 2s infinite;
-}
-
-.chat-toggle-btn::after {
-  animation-delay: 1s;
-}
-
-@keyframes pulse {
-  0% {
-    transform: scale(0.8);
-    opacity: 0.4;
-  }
-  100% {
-    transform: scale(2);
-    opacity: 0;
-  }
-}
-
-.chat-toggle-btn:hover {
-  transform: scale(1.1);
-  animation: none;
-}
-.chat-toggle-btn:hover::before,
-.chat-toggle-btn:hover::after {
-  animation: none;
-}
-    .chat-window {
-      width: 360px;
-      background: ${CONFIG.glassEffect 
-        ? 'rgba(255, 255, 255, 0.15)' 
-        : CONFIG.backgroundColor || '#ffffff'};
-      backdrop-filter: ${CONFIG.glassEffect ? 'blur(12px)' : 'none'};
-      -webkit-backdrop-filter: ${CONFIG.glassEffect ? 'blur(12px)' : 'none'};
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-      border: ${CONFIG.glassEffect ? '1px solid rgba(255,255,255,0.2)' : 'none'};
-      display: none;
-      flex-direction: column;
-      overflow: hidden;
-      max-height: 80vh;
+      .chat-toggle-btn {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: ${CONFIG.mainColor};
+        color: white;
+        border: none;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        transition: transform 0.2s;
+      }
+      .chat-toggle-btn:hover {
+        transform: scale(1.1);
+      }
+      .chat-window {
+        width: 360px;
+        background: ${CONFIG.backgroundColor};
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        display: none;
+        flex-direction: column;
+        overflow: hidden;
+        max-height: 80vh;
       }
       .chat-header {
         padding: 16px;
@@ -234,13 +191,15 @@
       }
     </style>
 
-    <button class="chat-toggle-btn">💬</button>
-      <div class="chat-window">
+    <button class="chat-toggle-btn">
+      <img src="${CONFIG.avatarUrl}" alt="Аватар" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" />
+    </button>
+    <div class="chat-window">
       <div class="chat-header">
-      <img src="${CONFIG.avatarUrl}" class="bot-avatar" alt="Агент" />
-      <span>${CONFIG.botName}</span>
-      <button class="close-btn">×</button>
-    </div>
+        <img src="${CONFIG.avatarUrl}" class="bot-avatar" alt="Агент" />
+        <span>${CONFIG.botName}</span>
+        <button class="close-btn">×</button>
+      </div>
       <div class="chat-messages">
         <div class="message bot-message">${CONFIG.welcomeMessage}</div>
         <div class="channel-selector">
@@ -359,7 +318,5 @@
     if (e.key === 'Enter') sendMessage(inputEl.value);
   });
 })();
-
-
 
 
