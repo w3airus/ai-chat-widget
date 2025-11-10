@@ -115,8 +115,8 @@
         font-size: 14px;
       }
       .bot-avatar {
-        width: 32px;
-        height: 32px;
+        width: 45px;
+        height: 45px;
         border-radius: 50%;
         object-fit: cover;
       }
@@ -342,3 +342,4 @@
     if (e.key === 'Enter') sendMessage(inputEl.value);
   });
 })();
+
