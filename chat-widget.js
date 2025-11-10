@@ -194,6 +194,18 @@
         background: #f8fafc;
         color: ${CONFIG.mainColor};
       }
+	  .channel-btn.full-width {
+  		width: 100%;
+  		flex: none !important;
+  		text-align: center;
+  		justify-content: center;
+	  }
+	  .messenger-row {
+  		display: flex;
+  		gap: 8px;
+  		flex-wrap: wrap;
+  		margin-top: 12px;
+	  }
       .consent-block label {
         display: flex;
         align-items: flex-start;
@@ -342,4 +354,5 @@
     if (e.key === 'Enter') sendMessage(inputEl.value);
   });
 })();
+
 
