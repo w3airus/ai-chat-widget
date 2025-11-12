@@ -349,19 +349,20 @@
     inputEl.focus();
   }
 
-  sendBtn.addEventListener('click', () => sendMessage(inputEl.value));
+    sendBtn.addEventListener('click', () => sendMessage(inputEl.value));
   inputEl.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') sendMessage(inputEl.value);
   });
-	// Функция для открытия чата извне
-window.openAiChat = function() {
-  const chatWindow = document.querySelector('.chat-window');
-  const toggleBtn = document.querySelector('.chat-toggle-btn');
-  if (chatWindow && toggleBtn) {
-    chatWindow.style.display = 'flex';
-    toggleBtn.style.display = 'none';
-  }
-};
+
+  // === РЕГИСТРИРУЕМ ФУНКЦИЮ ОТКРЫТИЯ ЧАТА ===
+  window.openAiChat = function() {
+    const chatWindow = document.querySelector('.chat-window');
+    const toggleBtn = document.querySelector('.chat-toggle-btn');
+    if (chatWindow && toggleBtn) {
+      chatWindow.style.display = 'flex';
+      toggleBtn.style.display = 'none';
+    }
+  };
 })();
 
 
