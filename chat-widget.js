@@ -10,7 +10,7 @@
     avatarUrl: script.dataset.avatar || 'https://via.placeholder.com/40/2563eb/ffffff?text=AI',
     welcomeMessage: script.dataset.welcome || 'Здравствуйте! Чем могу помочь?',
     inputPlaceholder: script.dataset.placeholder || 'Напишите ваш вопрос...',
-    backendUrl: script.dataset.webhook || 'https://your-n8n-url.com/webhook/chat',
+    backendUrl: script.dataset.webhook || 'https://w3ai.ru/webhook/chat',
     privacyUrl: script.dataset.privacyUrl || '#'
   };
 
@@ -364,6 +364,7 @@
     }
   };
 })();
+
 
 
 
