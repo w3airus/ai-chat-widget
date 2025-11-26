@@ -143,7 +143,7 @@
     inputEl.disabled = true;
     sendBtn.disabled = true;
 
-    try {
+        try {
       const response = await fetch(CONFIG.backendUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -153,9 +153,34 @@
           timestamp: new Date().toISOString()
         })
       });
-      const data = await response.json();
+
+      // Проверяем статус ответа
+      if (!response.ok) {
+        console.error(`Ошибка HTTP: ${response.status} ${response.statusText}`);
+        addMessage('Ошибка сервера. Попробуйте позже.');
+        inputEl.disabled = false;
+        sendBtn.disabled = false;
+        inputEl.focus();
+        return;
+      }
+
+      // Проверяем, есть ли тело у ответа
+      const contentType = response.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        console.error("Ответ от сервера не является JSON.");
+        addMessage('Ошибка получения ответа от сервера.');
+        inputEl.disabled = false;
+        sendBtn.disabled = false;
+        inputEl.focus();
+        return;
+      }
+
+      const data = await response.json(); // Теперь ошибка будет ловиться в catch только при синтаксической ошибке JSON
       addMessage(data.reply || 'Спасибо! Оператор ответит позже.');
+
     } catch (err) {
+      // Ловим как сетевые ошибки, так и ошибки парсинга JSON
+      console.error("Ошибка при отправке сообщения:", err); // Логируем ошибку в консоль для отладки
       addMessage('Ошибка отправки.');
     }
 
@@ -178,3 +203,4 @@
     }
   };
 })();
+
